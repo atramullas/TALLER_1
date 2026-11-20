@@ -16,8 +16,8 @@
 
 - Crea/Actualiza tu repositorio remoto con estas funcionalidades
 
-- Desde Github modifica el contenido del fichero README.md, 
-	- Elimina el texto actual e introduce: "#Esto es mi primer proyecto en TTAD"
+- Desde Github modifica el contenido del fichero README.md,
+- "#Esto es mi primer proyecto en TTAD"
 
 - ¿Qué instrucciones tienes que ejecutar en tu terminal del proyecto para integrar los nuevos cambios remotos en tu repositorio local? Investiga los comandos git necesarios para resolver el conflicto.
 
