@@ -1,36 +1,45 @@
 
-# FUNCIONALIDADES
+import json
 
-# TOTAL FACTURADO
-def calcular_total_facturado(ventas: list[dict]) -> float:
-    """Calcula el importe total facturado en todas las ventas."""
-    return sum(v["cantidad"] * v["precio_unitario"] for v in ventas)
+with open("data.json", "r", encoding="utf-8") as file:                  
+    data = json.load(file)
+
+ventas = data["ventas"]
+
+#TOTAL FACTURADO
+def total_facturado(ventas):
+    total = 0
+    for venta in ventas:
+        total += venta["cantidad"] * venta["precio_unitario"]
+    
+    return total
+
+print("Total facturado:", total_facturado(ventas))
 
 # VENTAS POR CATEGORÍA
-def calcular_ventas_por_categoria(ventas: list[dict]) -> dict[str, float]:
-    """Agrupa y suma el importe facturado por categoría."""
-    totales: dict[str, float] = {}
-    for v in ventas:
-        categoria = v["categoria"]
-        importe = v["cantidad"] * v["precio_unitario"]
-        totales[categoria] = totales.get(categoria, 0.0) + importe
-    return dict(sorted(totales.items(), key=lambda item: item[1], reverse=True))
+def ventas_por_categoria(ventas):
+    categorias = {}
+    for venta in ventas:
+        categoria = venta["categoria"]
+        importe = venta["cantidad"] * venta["precio_unitario"]
+        if categoria not in categorias:
+            categorias[categoria] = 0
+        categorias[categoria] += importe
+    
+    return categorias
+print("Ventas por categoría:", ventas_por_categoria(ventas))
 
 # PRODUCTO MÁS VENDIDO
-def obtener_producto_mas_vendido(ventas: list[dict], criterio: str = "unidades") -> tuple[str, float] | None:
-    """
-    Devuelve (producto, valor) del más vendido.
-    `criterio`: 'unidades' (por cantidad) o 'ingresos' (por importe facturado).
-    """
-    if not ventas:
-        return None
+def producto_mas_vendido(ventas):
+    productos = {}
+    for venta in ventas:
+        producto = venta["producto"]
+        cantidad = venta["cantidad"]
+        if producto not in productos:
+            productos[producto] = 0
+        productos[producto] += cantidad
+    
+    max_producto = max(productos, key=productos.get)
+    return max_producto, productos[max_producto]
 
-    acumulado: dict[str, float] = {}
-    for v in ventas:
-        producto = v["producto"]
-        valor = v["cantidad"] if criterio == "unidades" else v["cantidad"] * v["precio_unitario"]
-        acumulado[producto] = acumulado.get(producto, 0.0) + valor
-
-    return max(acumulado.items(), key=lambda item: item[1])
-
-
+print("Producto más vendido:", producto_mas_vendido(ventas))
